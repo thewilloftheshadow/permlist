@@ -41,7 +41,7 @@ client.on("messageCreate", async (message) => {
         await Promise.all(
             chanList.map(async (channel) => {
                 const record: Record = {}
-                record.channel = channel.name
+                record.channel = `${channel.name} - ${channel.id}`
                 roles.forEach((role) => {
                     const perms = channel.permissionsFor(role.id)
                     const status = []
@@ -54,6 +54,11 @@ client.on("messageCreate", async (message) => {
         )
         await csvWriter.writeRecords(out)
 
-        m.edit({ content: "Done", files: [path] })
+        m.edit({
+            content: `Done! I've attached a CSV file of the Read and Send permissions for the channels in your server.
+                The roles are along the top and the channels are along the side.
+                Want to add more permissions to track? Just send a DM to TheShadow#8124.`,
+            files: [path],
+        })
     }
 })
